@@ -62,9 +62,6 @@ class UserSerializer(serializers.ModelSerializer):
             "foto", "foto_thumbnail",
             # calculados
             "tiempo", "tiempo_en", "edad",
-            # días/licencias u otros campos propios
-            "d_ini", "observacion_dia", "dias_tomados", "dias_restantes",
-            "dias_cumpleanios", "cumpleanio_ocupado",
 
         ]
         read_only_fields = [
@@ -98,16 +95,3 @@ class UserSerializer(serializers.ModelSerializer):
         except Exception:
             return None
         return url if url and url != "/media/" else None
-
-class DiasUsuarioSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = [
-            'id',
-            'first_name',
-            'last_name',
-            'dias_tomados',
-            'dias_restantes',
-            'dias_cumpleanios',
-            'birthday',
-        ]

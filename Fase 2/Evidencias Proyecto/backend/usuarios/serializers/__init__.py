@@ -1,5 +1,5 @@
 # __init__.py
-from .user_serializers import UserSerializer,DiasUsuarioSerializer,UserEvaSerializer
+from .user_serializers import UserSerializer,UserEvaSerializer
 
 
 from .empresa_serializers import EmpresaSerializer

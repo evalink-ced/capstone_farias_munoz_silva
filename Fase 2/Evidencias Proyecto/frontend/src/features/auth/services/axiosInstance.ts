@@ -11,8 +11,13 @@ import {
 } from "@/features/auth/services/tokenService";
 
 
+const baseURL = (import.meta.env.VITE_API_URL || "").trim();
+if (!baseURL) {
+  console.warn("[axiosInstance] VITE_API_URL no está definido; las peticiones fallarán.");
+}
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL,
   withCredentials: true,
 });
 
@@ -27,12 +32,12 @@ function onRefreshed(newAccess: string) {
 }
 
 function isRefreshUrl(url?: string) {
-  if (!url) return false;
+  const refreshPath = "/api/token/refresh/";
   try {
-    const u = new URL(url, api.defaults.baseURL);
-    return u.pathname.endsWith("/token/refresh/");
+    const u = new URL(url!, api.defaults.baseURL);
+    return u.pathname.endsWith(refreshPath);
   } catch {
-    return url.includes("/token/refresh");
+    return !!url && url.includes(refreshPath);
   }
 }
 
@@ -65,7 +70,7 @@ async function refreshToken(): Promise<string> {
   if (!refresh) throw new Error("No refresh token");
 
   const res = await axios.post(
-    `${import.meta.env.VITE_API_URL}/token/refresh/`,
+    `${import.meta.env.VITE_API_URL}/api/token/refresh/`,
     { refresh },
     { withCredentials: true }
   );

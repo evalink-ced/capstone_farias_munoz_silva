@@ -5,7 +5,7 @@ from import_export import resources, fields
 from import_export.widgets import ForeignKeyWidget
 from historial.admin import HistorialAdminMixin
 from usuarios.models import (
-    User, Cargo, Ciclo, Codigo, Genero, ContactoEmergencia
+    User, Cargo, Ciclo, Codigo, Genero
 )
 # Importar el nuevo modelo
 from institucion.models import AsignacionTrabajador
@@ -66,7 +66,7 @@ class UserResource(resources.ModelResource):
         fields = (
             'id', 'last_login', 'is_staff', 'is_active', 'rut', 'password', 'username',
             'first_name', 'last_name', 'email', 'is_superuser', 'birthday',
-            'date_joined', 'jefe', 'tiempo', 'tiempo_en', 'd_ini', 'dias_tomados',
+            'date_joined', 'jefe', 'tiempo', 'tiempo_en', 'dias_tomados',
             'dias_restantes', DIAS_cumpleanioS, 'group__name', 'cargo__cargo', 'ciclo__ciclo',
             'codigo__codigo', 'empresa', 'genero', 'foto',
             # nuevos
@@ -127,9 +127,6 @@ class CustomUserAdmin(HistorialAdminMixin):
             'fields': ('jefe', 'empresa', 'date_joined', 'tiempo_en_admin', 'cargo', 'ciclo', 'codigo')
         }),
         (_('Permisos'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'group')}),
-        (_('Día administrativos'), {
-            'fields': ('d_ini', 'dias_tomados', 'dias_restantes', DIAS_cumpleanioS, 'cumpleanio_ocupado', 'observacion_dia')
-        }),
     )
 
     add_fieldsets = (
@@ -147,35 +144,35 @@ class CustomUserAdmin(HistorialAdminMixin):
     inlines = [AsignacionTrabajadorInline]
 
 
-class TramosAdmin(HistorialAdminMixin):
-    list_display = ('tramo',)
-    search_fields = ('tramo',)
-    list_filter = ('tramo',)
+# class TramosAdmin(HistorialAdminMixin):
+#     list_display = ('tramo',)
+#     search_fields = ('tramo',)
+#     list_filter = ('tramo',)
 
 
-class TituloCapacitacionAdmin(HistorialAdminMixin):
-    list_display = ('titulo',)
-    search_fields = ('titulo',)
-    list_filter = ('titulo',)
+# class TituloCapacitacionAdmin(HistorialAdminMixin):
+#     list_display = ('titulo',)
+#     search_fields = ('titulo',)
+#     list_filter = ('titulo',)
 
-class CapacitacionAdmin(HistorialAdminMixin):
-    list_display = ('titulo_general','nombre','descripcion')
-    search_fields = ('titulo_general','nombre','descripcion')
-    list_filter = ('titulo_general','nombre','descripcion')
+# class CapacitacionAdmin(HistorialAdminMixin):
+#     list_display = ('titulo_general','nombre','descripcion')
+#     search_fields = ('titulo_general','nombre','descripcion')
+#     list_filter = ('titulo_general','nombre','descripcion')
 
-class ParticipacionCapaAdmin(HistorialAdminMixin):
-    list_display = ('capacitacion__titulo_general','capacitacion', 'fecha_realizacion','total_usuarios')
-    search_fields = ('capacitacion', 'fecha_realizacion')
-    list_filter = ('capacitacion', 'fecha_realizacion')
+# class ParticipacionCapaAdmin(HistorialAdminMixin):
+#     list_display = ('capacitacion__titulo_general','capacitacion', 'fecha_realizacion','total_usuarios')
+#     search_fields = ('capacitacion', 'fecha_realizacion')
+#     list_filter = ('capacitacion', 'fecha_realizacion')
 
-    def total_usuarios(self, obj):
-        return obj.usuario.count()
-    total_usuarios.short_description = 'Total Usuarios'
+#     def total_usuarios(self, obj):
+#         return obj.usuario.count()
+#     total_usuarios.short_description = 'Total Usuarios'
 
-class BieniosAdmin(HistorialAdminMixin):
-    list_display = ('usuario', 'bienios', 'tramo')
-    search_fields = ('bienios', 'tramo__tramo')
-    list_filter = ('bienios', 'tramo')
+# class BieniosAdmin(HistorialAdminMixin):
+#     list_display = ('usuario', 'bienios', 'tramo')
+#     search_fields = ('bienios', 'tramo__tramo')
+#     list_filter = ('bienios', 'tramo')
 
 
 class CargoAdmin(HistorialAdminMixin):
@@ -198,10 +195,10 @@ class GeneroAdmin(HistorialAdminMixin):
     list_display = ('genero',)
     list_filter = ('genero',)
 
-class ContactoEmergenciaAdmin(HistorialAdminMixin):
-    list_display = ('usuario','nombre','telefono','parentezco')
-    search_fields = ('usuario__username', 'nombre', 'telefono', 'parentezco')
-    list_filter = ('usuario', 'nombre', 'telefono', 'parentezco')
+# class ContactoEmergenciaAdmin(HistorialAdminMixin):
+#     list_display = ('usuario','nombre','telefono','parentezco')
+#     search_fields = ('usuario__username', 'nombre', 'telefono', 'parentezco')
+#     list_filter = ('usuario', 'nombre', 'telefono', 'parentezco')
 
 
 
@@ -210,7 +207,7 @@ admin.site.register(Cargo, CargoAdmin)
 admin.site.register(Ciclo, CicloAdmin)
 admin.site.register(Codigo, CodigoAdmin)
 admin.site.register(Genero, GeneroAdmin)
-admin.site.register(ContactoEmergencia, ContactoEmergenciaAdmin)
+# admin.site.register(ContactoEmergencia, ContactoEmergenciaAdmin)
 
 
 

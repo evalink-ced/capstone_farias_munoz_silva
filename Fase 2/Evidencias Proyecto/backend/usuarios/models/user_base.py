@@ -135,8 +135,6 @@ class User(AbstractUser, ContractMixin, AssignmentMixin):
         blank=True,
         verbose_name="Código"
     )
-
-    # Contrato
     tipo_contrato = models.CharField(
         max_length=6, 
         choices=TipoContrato.choices, 
@@ -148,34 +146,6 @@ class User(AbstractUser, ContractMixin, AssignmentMixin):
         blank=True,
         verbose_name="Fecha término contrato"
     )
-    
-    # Gestión de días libres
-    d_ini = models.FloatField(
-        default=0, 
-        verbose_name=_('Cantidad Inicial')
-    )
-    observacion_dia = models.TextField(
-        blank=True, 
-        null=True, 
-        verbose_name=_('Observación Día')
-    )
-    dias_tomados = models.FloatField(
-        default=0, 
-        verbose_name=_('Días Tomados')
-    )
-    dias_restantes = models.FloatField(
-        default=DEFAULT_DIAS_RESTANTES, 
-        verbose_name=('Días Restantes')
-    )
-    dias_cumpleanios = models.FloatField(
-        default=DEFAULT_DIAS_CUMPLEANIOS, 
-        verbose_name=('Días cumpleaños')
-    )
-    cumpleanio_ocupado = models.FloatField(
-        default=0, 
-        verbose_name=_('Días cumpleaños ocupado')
-    )
-    
 
     # Campo deprecado - mantener para compatibilidad
     empresa = models.ForeignKey(

@@ -16,6 +16,7 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
+    "@codetrix-studio/capacitor-google-auth": "^3.4.0-rc.4",
     "@fullcalendar/daygrid": "^6.1.18",
     "@fullcalendar/interaction": "^6.1.18",
     "@fullcalendar/list": "^6.1.18",

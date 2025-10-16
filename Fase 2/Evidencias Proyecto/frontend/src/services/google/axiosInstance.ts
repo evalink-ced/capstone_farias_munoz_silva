@@ -15,8 +15,13 @@ const PUBLIC_ROUTES = [
   "/api/auth/google/callback/",
 ];
 
+const baseURL = (import.meta.env.VITE_API_URL || "").trim();
+if (!baseURL) {
+  console.warn("[google/axiosInstance] VITE_API_URL no está definido; las peticiones fallarán.");
+}
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL,
   withCredentials: false,
   headers: {
     "Content-Type": "application/json",

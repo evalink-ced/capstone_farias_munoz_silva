@@ -3,7 +3,6 @@ from usuarios.models import User
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from usuarios.serializers import DiasUsuarioSerializer
 from rest_framework import viewsets
 
 
@@ -37,14 +36,3 @@ class UsuarioActualAPIView(APIView):
         })
 
 
-class DiasUsuarioViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = DiasUsuarioSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        user = self.request.user
-        if user.is_superuser:
-            return User.objects.filter(is_active=True)
-        if user.group.id == 21:
-            return User.objects.filter(is_active=True, empresa=user.empresa)
-        return User.objects.filter(jefe=user, is_active=True)

@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from decouple import config
+from django.conf import settings
 
 FRONTEND_URL = config('FRONTEND_URL')
 GOOGLE_CLIENT_ID = config("GOOGLE_CLIENT_ID")
@@ -116,36 +117,51 @@ class GoogleTokenLoginView(APIView):
             if id_info["iss"] not in ["accounts.google.com", "https://accounts.google.com"]:
                 return Response({"error": "Emisor inválido"}, status=403)
 
-            email = id_info.get("email")
-           
+            email_raw = id_info.get("email")
+            email = (email_raw or "").strip()
+            print(f"🔎 Email recibido: '{email}'")
+
+            # Log de base de datos y muestras
+            db_conf = settings.DATABASES.get('default', {})
+            print(f"🗄️ DB engine: {db_conf.get('ENGINE')}, nombre/url: {db_conf.get('NAME') or db_conf}")
+            sample_emails = list(User.objects.filter(email__isnull=False).values_list('email', flat=True)[:5])
+            print(f"📋 Emails de ejemplo en BD: {sample_emails}")
 
             if not email:
                 return Response({"error": "No se encontró email en token"}, status=400)
-            try:
-                # 🔒 Si el usuario ya existe → login directo
-                user = User.objects.get(email=email)
+
+            # Búsqueda insensible a mayúsculas y con fallback a username
+            user = (
+                User.objects.filter(email__iexact=email).first()
+                or User.objects.filter(username__iexact=email).first()
+            )
+            print(f"🔎 Usuario encontrado: {bool(user)}")
+            if not user:
+                domain = email.split('@')[-1].lower()
+                domain_count = User.objects.filter(email__icontains='@' + domain).count()
+                print(f"📊 Usuarios con dominio '{domain}': {domain_count}")
+
+            if user:
                 user.backend = 'django.contrib.auth.backends.ModelBackend'
                 login(request, user)
-
                 refresh = RefreshToken.for_user(user)
                 return Response({
                     "access": str(refresh.access_token),
                     "refresh": str(refresh),
                 })
 
-            except User.DoesNotExist:
-                # 🔍 Si no existe, valida dominio y responde con mensaje claro
-                domain = email.split('@')[-1].lower()
-                if domain not in ALLOWED_DOMAINS:
-                    return Response({
-                        "error": "invalid_domain",
-                        "detail": f"El dominio '{domain}' no está autorizado para usar esta plataforma, debe registrarse antes"
-                    }, status=403)
-
+            # Si no hay usuario, valida dominio y responde
+            domain = email.split('@')[-1].lower()
+            if domain not in ALLOWED_DOMAINS:
                 return Response({
-                    "error": "no_registered",
-                    "detail": f"El correo '{email}' tiene un dominio válido pero no está registrado en el sistema"
+                    "error": "invalid_domain",
+                    "detail": f"El dominio '{domain}' no está autorizado para usar esta plataforma, debe registrarse antes"
                 }, status=403)
+
+            return Response({
+                "error": "no_registered",
+                "detail": f"El correo '{email}' tiene un dominio válido pero no está registrado en el sistema"
+            }, status=403)
 
         except ValueError as e:
             return Response({"error": str(e)}, status=400)

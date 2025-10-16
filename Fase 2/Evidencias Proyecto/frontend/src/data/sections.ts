@@ -4,14 +4,14 @@ import { buttons } from "@/data/buttons";
 
 export const sections: Section[] = [
   {
-    title: "PORTAL TRABAJADOR",
+    title: "TRABAJADOR",
     icon: "🧑‍🏫",
     buttons: [
       buttons.evaluacionAuto,
     ],
   },
   {
-    title: "EQUIPO DIRECTIVO",
+    title: "EVALUADOR",
     icon: "📋",
     buttons: [
       buttons.evaluarDesempeno,

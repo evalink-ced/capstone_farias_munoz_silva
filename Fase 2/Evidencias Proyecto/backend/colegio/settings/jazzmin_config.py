@@ -3,9 +3,9 @@ FRONTEND_URL = config('FRONTEND_URL')
 
 JAZZMIN_SETTINGS = {
     "site_title": "ADMINISTRACIÓN",
-    "site_header": "CSLB",
-    "site_brand": "CSLB",
-    "site_logo": "imagen/cslb.png",
+    "site_header": "Evalink",
+    "site_brand": "Evalink",
+    #"site_logo": "imagen/evalink.png",
     "site_logo_classes": "img-circle",
     "site_icon": "32px",
 

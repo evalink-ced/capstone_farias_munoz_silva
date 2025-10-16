@@ -55,16 +55,24 @@ const EnhancedBubbles = () => {
     if (typeof window === "undefined") return;
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
+    const isDark = document.documentElement.classList.contains("dark");
 
     const newBubbles = [...Array(10)].map((_, i) => {
       const size = 40 + Math.random() * 40;
       const depth = i / 10;
-      const colors = [
-        "rgba(59, 130, 246, 0.2)",   // blue-500
-        "rgba(147, 51, 234, 0.15)",  // purple-600
-        "rgba(16, 185, 129, 0.12)",  // emerald-500
-        "rgba(99, 102, 241, 0.18)",  // indigo-500
-      ];
+      const colors = isDark
+        ? [
+            "rgba(59,130,246,0.25)",   // blue-500
+            "rgba(147,51,234,0.20)",   // purple-600
+            "rgba(16,185,129,0.18)",   // emerald-500
+            "rgba(99,102,241,0.22)",   // indigo-500
+          ]
+        : [
+            "rgba(59, 130, 246, 0.2)",   // blue-500
+            "rgba(147, 51, 234, 0.15)",  // purple-600
+            "rgba(16, 185, 129, 0.12)",  // emerald-500
+            "rgba(99, 102, 241, 0.18)",  // indigo-500
+          ];
 
       return (
         <motion.div
@@ -82,6 +90,8 @@ const EnhancedBubbles = () => {
             backgroundColor: colors[i % colors.length],
             boxShadow: `0 0 40px ${colors[i % colors.length]}`,
             zIndex: -depth * 10,
+            mixBlendMode: isDark ? "screen" : "normal",
+            filter: "blur(0.5px)",
           }}
           transition={{ duration: 15 - depth * 5, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
         />
@@ -127,7 +137,7 @@ const Welcome: React.FC = () => {
   return (
     <>
       {/* Fondo animado */}
-      <div className="fixed inset-0 -z-10 overflow-hidden bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900">
+      <div className="fixed inset-0 -z-10 overflow-hidden bg-gradient-to-br from-blue-100 to-purple-100 dark:from-[#0b1220] dark:via-[#0f1831] dark:to-[#0b1220]">
         <EnhancedBubbles />
       </div>
 
@@ -141,7 +151,7 @@ const Welcome: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="w-full max-w-[480px]"  // ← ancho ampliado
           >
-            <Card className="rounded-2xl backdrop-blur-lg bg-white/95 dark:bg-slate-800/95 shadow-2xl border border-white/50 dark:border-slate-700/50">
+            <Card className="rounded-2xl backdrop-blur-xl bg-white/95 dark:bg-[#111827]/90 shadow-xl dark:shadow-[0_20px_80px_rgba(0,0,0,0.7)] border border-white/50 dark:border-white/10 ring-1 ring-black/5 dark:ring-white/5">
               {/* Header del card */}
               <CardHeader className="text-center justify-center py-10 px-8">
                 <div className="space-y-6">

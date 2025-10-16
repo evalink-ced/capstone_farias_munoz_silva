@@ -10,12 +10,10 @@ from usuarios.views.cron_views import ejecutar_recordatorios_pendientes
 from .api.api import UserProfileView, UserAllView, UserDetailView
 from rest_framework_simplejwt.views import TokenRefreshView
 from usuarios.views import (
-     CicloViewSet, DiasUsuarioViewSet)
+     CicloViewSet)
 
 router = DefaultRouter()
 router.register(r'ciclos', CicloViewSet)
-router.register(r'usuarios-dias', DiasUsuarioViewSet, basename='usuarios-dias')
-
 
 
 urlpatterns = [
