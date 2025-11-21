@@ -8,12 +8,6 @@ class Cargo(models.Model):
         return self.cargo
 
 
-class Codigo(models.Model):
-    codigo = models.CharField(max_length=10)
-
-    def __str__(self):
-        return self.codigo
-
 
 class Ciclo(models.Model):
     ciclo = models.CharField(max_length=30)

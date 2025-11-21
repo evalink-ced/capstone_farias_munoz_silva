@@ -18,7 +18,7 @@ export const PERMISSIONS = {
     JEFATURA: 'evaluacion.jefatura',
   },
   
-  // Licencias
+
   
   // Fundación
   FUNDACION: {

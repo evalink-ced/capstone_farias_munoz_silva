@@ -5,12 +5,15 @@ import { TipoEvaluacion } from "@/features/evaluacion/types/evaluacion";
 
 export default function useTiposEvaluacion() {
   const [tipos, setTipos] = useState<TipoEvaluacion[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get("/evaluacion/api/tipos-evaluacion/")
-      .then((res) => setTipos(res.data));
+      .then((res) => setTipos(res.data))
+      .finally(() => setLoading(false));
   }, []);
 
-  return tipos;
+  return { tipos, loading };
 }

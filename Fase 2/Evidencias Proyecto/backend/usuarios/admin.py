@@ -5,7 +5,7 @@ from import_export import resources, fields
 from import_export.widgets import ForeignKeyWidget
 from historial.admin import HistorialAdminMixin
 from usuarios.models import (
-    User, Cargo, Ciclo, Codigo, Genero
+    User, Cargo, Ciclo, Genero
 )
 # Importar el nuevo modelo
 from institucion.models import AsignacionTrabajador
@@ -68,7 +68,7 @@ class UserResource(resources.ModelResource):
             'first_name', 'last_name', 'email', 'is_superuser', 'birthday',
             'date_joined', 'jefe', 'tiempo', 'tiempo_en', 'dias_tomados',
             'dias_restantes', DIAS_cumpleanioS, 'group__name', 'cargo__cargo', 'ciclo__ciclo',
-            'codigo__codigo', 'empresa', 'genero', 'foto',
+            'empresa', 'genero', 'foto',
             # nuevos
             'titulos', 'magister', 'diplomados', 'bienios'
         )
@@ -124,7 +124,7 @@ class CustomUserAdmin(HistorialAdminMixin):
         }),
         (_('Información Laboral'), {
             # reemplaza 'tiempo', 'tiempo_en' por los métodos readonly
-            'fields': ('jefe', 'empresa', 'date_joined', 'tiempo_en_admin', 'cargo', 'ciclo', 'codigo')
+            'fields': ('jefe', 'empresa', 'date_joined', 'tiempo_en_admin', 'cargo', 'ciclo')
         }),
         (_('Permisos'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'group')}),
     )
@@ -186,9 +186,6 @@ class CicloAdmin(HistorialAdminMixin):
     list_filter = ('ciclo',)
 
 
-class CodigoAdmin(HistorialAdminMixin):
-    list_display = ('codigo',)
-    list_filter = ('codigo',)
 
 
 class GeneroAdmin(HistorialAdminMixin):
@@ -205,7 +202,7 @@ class GeneroAdmin(HistorialAdminMixin):
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Cargo, CargoAdmin)
 admin.site.register(Ciclo, CicloAdmin)
-admin.site.register(Codigo, CodigoAdmin)
+
 admin.site.register(Genero, GeneroAdmin)
 # admin.site.register(ContactoEmergencia, ContactoEmergenciaAdmin)
 

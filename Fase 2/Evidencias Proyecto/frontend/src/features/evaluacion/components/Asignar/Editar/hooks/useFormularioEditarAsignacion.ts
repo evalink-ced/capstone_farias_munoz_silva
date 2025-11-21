@@ -13,7 +13,7 @@ export const useFormularioEditarAsignacion = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const modalExito = useModal();
-  const tipos = useTiposEvaluacion();
+  const { tipos, loading: tiposLoading } = useTiposEvaluacion();
   const { usuarios, empresas, ciclos } = useUsuariosEmpresasCiclos();
   const [modoEdicion, setModoEdicion] = useState(false);
 
@@ -141,6 +141,7 @@ export const useFormularioEditarAsignacion = () => {
 
     // Datos computados
     tipos,
+    tiposLoading,
     empresas,
     ciclos,
     usuariosFiltrados,

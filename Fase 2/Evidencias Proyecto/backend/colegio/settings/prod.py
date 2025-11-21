@@ -16,6 +16,7 @@ ALLOWED_HOSTS = [
     "www.comunidadeducativadigital.cl",
     "back.comunidadeducativadigital.cl",
     "backendcomunidad-production.up.railway.app",
+    "localhost",
 ]
 
 # Media files ahora se manejan con Google Cloud Storage
@@ -44,6 +45,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://back.gsr.cat",
     "https://www.gsr.cat",
     "https://gsr.cat",
+    "https://localhost",  # <-- añadido para uso desde WebView/Capacitor
 ]
 
 
@@ -83,6 +85,14 @@ CORS_ALLOWED_ORIGINS = [
     "https://back.gsr.cat",
     "https://www.gsr.cat",
     "https://gsr.cat",
+    "https://localhost",  # <-- añadido
+]
+# Permitir orígenes de apps híbridas (Capacitor/Ionic)
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^capacitor://localhost$",
+    r"^ionic://localhost$",
+    r"^http://localhost(:\d+)?$",
+    r"^https://localhost(:\d+)?$",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -91,6 +101,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = [
     "content-type",
     "authorization",
+    "x-requested-with",
 ]
 ADMINS = [('diasadmin', 'dias_administrativos@cslb.cl')]
 CORS_ALLOW_METHODS = [

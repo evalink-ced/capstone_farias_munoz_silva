@@ -3,13 +3,11 @@ import { useCallback, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardHeader, CardBody } from "@heroui/card";
 import { Tabs, Tab } from "@heroui/tabs";
-import { Progress } from "@heroui/progress";
 import { Chip } from "@heroui/chip";
 import { Divider } from "@heroui/divider";
 import "@/features/evaluacion/styles/animations.css";
 import { EvaluacionGrid, GridSkeleton } from "@/features/evaluacion/components/autoevaluacion/PageInicio";
 import { useAutoevaluaciones } from "@/features/evaluacion/hooks/useAutoevaluaciones";
-import { EvaluationUtils } from "@/features/evaluacion/constants/defaults";
 import axios from "axios";
 import { addToast } from "@heroui/toast";
 import { Button } from "@heroui/button";
@@ -169,11 +167,11 @@ export default function AutoevaluacionInicioPage() {
       }
 
       try {
-        // Buscar en memoria primero
+        // Buscar en memoria primero (opcional)
         let item = all.find((e: any) => e?.id === id);
         let isPonderada = item?.ponderada;
 
-        // Fallback a la API si es necesario
+        // Fallback a la API si es necesario (opcional)
         if (typeof isPonderada !== "boolean") {
           const { data } = await axios.get(`/evaluacion/api/autoevaluaciones/${id}/`, {
             params: { _t: Date.now() },
@@ -181,7 +179,8 @@ export default function AutoevaluacionInicioPage() {
           isPonderada = !!(data?.ponderada ?? data?.tipo_evaluacion?.ponderada);
         }
 
-        navigate("/evaluacion-jefatura/tabla/detalle", {
+        // ✅ Navegar al detalle de autoevaluación finalizada
+        navigate("/autoevaluacion/inicio/detalle", {
           state: { id, from: "/autoevaluacion/inicio" }
         });
       } catch (error) {
@@ -196,15 +195,7 @@ export default function AutoevaluacionInicioPage() {
     [navigate, all]
   );
 
-  // Determinar color del progreso
-  const getProgressColor = (percentage: number) => {
-    if (percentage === 100) return "success";
-    if (percentage >= 70) return "primary";
-    if (percentage >= 40) return "warning";
-    return "danger";
-  };
 
-  const logroColor = getProgressColor(estadisticas.promedioLogro);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 dark:from-slate-900 dark:via-blue-950/30 dark:to-indigo-950/50">
@@ -286,49 +277,6 @@ export default function AutoevaluacionInicioPage() {
                 percentage={estadisticas.progresoGeneral}
               />
             </div>
-
-            {/* Tarjeta de logro promedio */}
-            {estadisticas.completadas > 0 && (
-              <Card className="bg-gradient-to-r from-white to-slate-50 border-0 shadow-xl dark:from-slate-800 dark:to-slate-700">
-                <CardBody className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">
-                        Logro Promedio
-                      </h3>
-                      <p className="text-sm text-slate-600 dark:text-slate-300">
-                        Porcentaje de logro alcanzado
-                      </p>
-                    </div>
-                    <Chip
-                      color={logroColor}
-                      variant="flat"
-                      size="lg"
-                      className="font-bold"
-                    >
-                      {Math.round(estadisticas.promedioLogro)}%
-                    </Chip>
-                  </div>
-
-                  <Progress
-                    value={estadisticas.promedioLogro}
-                    color={logroColor}
-                    radius="full"
-                    className="mb-3"
-                    classNames={{
-                      track: "h-3 bg-slate-200 dark:bg-slate-700",
-                    }}
-                  />
-
-                  <div className="flex justify-between text-sm text-slate-500 dark:text-slate-400">
-                    <span>Basado en {estadisticas.completadas} evaluaciones</span>
-                    <span>
-                      {EvaluationUtils.getText(estadisticas.promedioLogro)}
-                    </span>
-                  </div>
-                </CardBody>
-              </Card>
-            )}
           </div>
         )}
 

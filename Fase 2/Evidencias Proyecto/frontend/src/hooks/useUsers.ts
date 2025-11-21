@@ -52,15 +52,7 @@ const useUsers = () => {
             : typeof user.empresa === "object" &&
               user.empresa !== null &&
               "name" in user.empresa &&
-              user.empresa.name.toLowerCase().includes(term)) ||
-          user.titulos?.some((t) => t.titulo.toLowerCase().includes(term)) ||
-          user.magisters?.some((m) =>
-            m.magister.toLowerCase().includes(term),
-          ) ||
-          user.diplomados?.some((d) =>
-            d.diplomado.toLowerCase().includes(term),
-          );
-
+              user.empresa.name.toLowerCase().includes(term))
         return match;
       });
 

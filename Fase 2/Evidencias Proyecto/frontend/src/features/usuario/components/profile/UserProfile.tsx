@@ -7,9 +7,8 @@ import { Tabs, Tab } from "@heroui/tabs";
 import { Badge } from "@heroui/badge";
 import {
   UserIcon,
-  Medal,
   FileText,
-  GraduationCap,
+
 } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { Select as HSelect, SelectItem } from "@heroui/select";
@@ -17,8 +16,6 @@ import { Select as HSelect, SelectItem } from "@heroui/select";
 import { UserEvaluations } from "../UserProfile";
 import {
   UserInfoCard,
-  UserBienios,
-  UserCapacitacion,
 } from "../UserProfile";
 
 import { useSession } from "@/hooks/useSession";
@@ -47,10 +44,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ hideEmptyTabs = false }) => {
   };
 
   const stats = useMemo(() => ({
-    academic: (user?.titulos?.length ?? 0) + (user?.magisters?.length ?? 0) + (user?.diplomados?.length ?? 0),
-    bienios: user?.bienios?.length ?? 0,
     evaluaciones: user?.evaluacion?.length ?? 0,
-    capacitacion: user?.capacitacion?.length ?? 0,
   }), [user]);
 
   // Cargar usuario
@@ -92,15 +86,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ hideEmptyTabs = false }) => {
         content: <UserInfoCard formatDate={formatDate} image={user?.foto} user={user} userId={userId} />,
         show: true,
       },
-      {
-        key: "bienios",
-        title: "Carrera",
-        icon: <Medal className="w-4 h-4" />,
-        count: stats.bienios,
-        color: "warning" as const,
-        content: <UserBienios bienios={user?.bienios || []} />,
-        show: !hideEmptyTabs || stats.bienios > 0,
-      },
+
       {
         key: "evaluaciones",
         title: "Evaluaciones",
@@ -110,15 +96,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ hideEmptyTabs = false }) => {
         content: <UserEvaluations evaluaciones={user?.evaluacion || []} />,
         show: (!hideEmptyTabs || stats.evaluaciones > 0) && [15, 11, 7].includes(loggedUser?.group || 0),
       },
-      {
-        key: "capacitacion",
-        title: "Capacitaciones",
-        icon: <GraduationCap className="w-4 h-4" />,
-        count: stats.capacitacion,
-        color: "danger" as const,
-        content: <UserCapacitacion capacitacion={user?.capacitacion || []} />,
-        show: !hideEmptyTabs || stats.capacitacion > 0,
-      },
+
     ].filter(tab => tab.show);
   }, [user, stats, hideEmptyTabs, loggedUser?.group, formatDate]);
   const [selectedKey, setSelectedKey] = useState<string>(tabs[0]?.key || "info");
@@ -257,10 +235,10 @@ const UserProfile: React.FC<UserProfileProps> = ({ hideEmptyTabs = false }) => {
                       <div className="flex items-center gap-2">
                         <div
                           className={`p-1.5 rounded-lg ${tab.color === "primary" ? "bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400"
-                              : tab.color === "warning" ? "bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400"
-                                : tab.color === "secondary" ? "bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-400"
-                                  : tab.color === "danger" ? "bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400"
-                                    : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
+
+                            : tab.color === "secondary" ? "bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-400"
+
+                              : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
                             }`}
                         >
                           {tab.icon}

@@ -3,8 +3,6 @@ from usuarios.views import (
 email_domain_error,solicitar_acceso,UsuarioActualAPIView
 )
 from rest_framework.routers import DefaultRouter
-from usuarios.views.cron_views import ejecutar_recordatorios_pendientes
-
 
 
 from .api.api import UserProfileView, UserAllView, UserDetailView
@@ -31,5 +29,4 @@ urlpatterns = [
      path('proyecto/api/user/<int:user_id>/', UserDetailView.as_view(), name='user-detail'),
      path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
      path("usuario/api/get/usuario/", UsuarioActualAPIView.as_view(), name="usuario-actual"),
-    path('cron/recordatorios-pendientes/', ejecutar_recordatorios_pendientes, name='cron_recordatorios'),
 ]

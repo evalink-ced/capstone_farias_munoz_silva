@@ -11,14 +11,13 @@ import ErrorList from "./components/ErrorList";
 const FormularioTipoEvaluacion = () => {
   const {
     isAutoevaluacion,
-    isPonderada,
     showSuccessModal,
     formSubmitted,
     erroresFormulario,
     nombreTipoEvaluacion,
     areas,
     onToggleAutoevaluacion,
-    onTogglePonderada,
+
     handleSubmit,
     handleSuccessModalClose,
     setNombre,
@@ -48,7 +47,6 @@ const FormularioTipoEvaluacion = () => {
             color="secondary"
             errorMessage="Este campo es obligatorio"
             isAutoevaluacion={isAutoevaluacion}
-            isPonderada={isPonderada}
             isEditing={true}
             showError={
               formSubmitted &&
@@ -59,7 +57,6 @@ const FormularioTipoEvaluacion = () => {
             value={nombreTipoEvaluacion}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNombre(e.target.value)}
             onToggleAutoevaluacion={onToggleAutoevaluacion}
-            onTogglePonderada={onTogglePonderada}
           />
 
           <AreaTabs

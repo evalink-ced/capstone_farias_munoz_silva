@@ -23,6 +23,7 @@ const FormularioEditarAsignacionEvaluacion = () => {
     fechaEvaluacion,
     usuariosSeleccionados,
     tipos,
+    tiposLoading,
     empresas,
     ciclos,
     usuariosFiltrados,
@@ -73,6 +74,7 @@ const FormularioEditarAsignacionEvaluacion = () => {
             isDisabled={!modoEdicion}
             selectedId={tipoEvaluacion?.id ?? null}
             tipos={tipos}
+            isLoading={tiposLoading}
             onSelect={setTipoEvaluacion}
           />
 

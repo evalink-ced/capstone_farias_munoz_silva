@@ -9,7 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from institucion.models import Asignacion
-from usuarios.models.estructura import Cargo, Codigo, Ciclo, Genero
+from usuarios.models.estructura import Cargo, Ciclo, Genero
 from usuarios.utils.date_utils import _as_date
 from usuarios.utils.validators import validate_rut
 from .user_choices import (
@@ -128,13 +128,7 @@ class User(AbstractUser, ContractMixin, AssignmentMixin):
         blank=True,
         verbose_name="Ciclo"
     )
-    codigo = models.ForeignKey(
-        Codigo, 
-        on_delete=models.SET_NULL, 
-        null=True, 
-        blank=True,
-        verbose_name="Código"
-    )
+
     tipo_contrato = models.CharField(
         max_length=6, 
         choices=TipoContrato.choices, 

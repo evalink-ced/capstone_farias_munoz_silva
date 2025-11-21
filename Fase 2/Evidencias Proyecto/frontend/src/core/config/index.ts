@@ -8,13 +8,8 @@ export const APP_CONFIG = {
 
   // Feature flags
   FEATURES: {
-    BENEFICIO: true,
     EVALUACION: true,
-    FORMULARIO: true,
-    LICENCIA: true,
-    PROTOCOLO: true,
     USUARIO: true,
-    CAPACITACION: true,
   },
 
   // UI Configuration

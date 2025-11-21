@@ -130,7 +130,7 @@ const UserInfoCard: React.FC<Props> = ({ user, image, formatDate }) => {
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="text-xs font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wide">
-                        Colegio
+                        Sede
                       </p>
                       <p className="text-xs font-semibold text-gray-900 dark:text-gray-100 truncate">
                         {typeof user.empresa === "string"
@@ -141,22 +141,7 @@ const UserInfoCard: React.FC<Props> = ({ user, image, formatDate }) => {
                   </div>
                 </div>
 
-                {/* Cargo */}
-                <div className="bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 rounded-lg p-3">
-                  <div className="flex items-center gap-2">
-                    <div className="p-1.5 rounded-md bg-green-100 dark:bg-green-900">
-                      <Briefcase className="w-3 h-3 text-green-600 dark:text-green-400" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-xs font-medium text-green-600 dark:text-green-400 uppercase tracking-wide">
-                        Cargo
-                      </p>
-                      <p className="text-xs font-semibold text-gray-900 dark:text-gray-100 truncate">
-                        {user.cargo || "Sin cargo"}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+
 
                 {/* Fecha de ingreso */}
                 <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-3 sm:col-span-2 lg:col-span-1">

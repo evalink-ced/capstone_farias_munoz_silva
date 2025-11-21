@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import Group
-from usuarios.models.estructura import Cargo, Ciclo, Codigo, Genero
+from usuarios.models.estructura import Cargo, Ciclo, Genero
 from institucion.models import Empresa
 from django.utils.translation import gettext_lazy as _
 
@@ -16,8 +16,6 @@ class RelacionesMixin(models.Model):
         Cargo, on_delete=models.SET_NULL, null=True, blank=True)
     ciclo = models.ForeignKey(
         Ciclo, on_delete=models.SET_NULL, null=True, blank=True)
-    codigo = models.ForeignKey(
-        Codigo, on_delete=models.SET_NULL, null=True, blank=True)
     empresa = models.ForeignKey(
         Empresa, on_delete=models.SET_NULL, null=True, blank=True)
     foto = models.ImageField(upload_to='foto/', blank=True, null=True)

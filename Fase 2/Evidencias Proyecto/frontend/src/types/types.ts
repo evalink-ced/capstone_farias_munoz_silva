@@ -5,20 +5,18 @@ export interface User {
   first_name: string;
   last_name: string;
   genero: string | null;
-  titulos: Titulo[];
-  diplomados: Diplomado[];
+
   is_superuser: boolean;
   edad: Date;
   empresa: Empresa | string | null | number;
-  magisters: Magister[];
+
   date_joined: string;
   username: string;
   cargo: string | null;
   email: string;
   telefono?: string;
-  bienios: Bienio[];
   evaluacion: Evaluation[];
-  capacitacion: Capacitacion[];
+
   jefe: string | null;
   group: number;
   rut: string;
@@ -32,40 +30,7 @@ export interface Empresa {
   name: string;
 }
 
-export interface Titulo {
-  titulo: string;
-  institucion: string;
-  anio: number;
-}
 
-export interface Diplomado {
-  diplomado: string;
-  institucion: string;
-  anio: number;
-}
-
-export interface Magister {
-  magister: string;
-  institucion: string;
-  anio: number;
-}
-
-export interface Bienio {
-  bienios: number;
-  tramo: string;
-}
-export interface Capacitacion {
-  id: number;
-  capacitacion: Capa;
-  fecha_realizacion: number;
-}
-
-export interface Capa {
-  id: number;
-  titulo_general: string;
-  nombre: string;
-  descripcion: string;
-}
 
 export interface Competencia {
   id: number;

@@ -79,6 +79,7 @@ const FormularioAsignacionEvaluacion = () => {
     cicloSeleccionado,
     usuariosFiltrados,
     tiposFiltrados,
+    tiposLoading,
     empresas,
     ciclos,
     modalExito,
@@ -143,6 +144,7 @@ const FormularioAsignacionEvaluacion = () => {
                     isAutoevaluacion={isAutoevaluacion}
                     selectedId={tipoEvaluacion?.id ?? null}
                     tipos={tiposFiltrados}
+                    isLoading={tiposLoading}
                     onSelect={setTipoEvaluacion}
                   />
                 </div>

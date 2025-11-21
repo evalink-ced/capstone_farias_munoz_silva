@@ -25,8 +25,10 @@ CSRF_TRUSTED_ORIGINS = [
     "https://www.comunidadeducativadigital.cl",
     "https://comunidadeducativadigital.cl",
     "http://localhost:5173",
+    "https://localhost",
     "https://back.gsr.cat",
     "http://localhost:8000",
+    
 ]
 
 
@@ -77,6 +79,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://www.gsr.cat",
     "https://gsr.cat",
     "https://back.gsr.cat",
+    "https://localhost",
     "https://backendcomunidad-production.up.railway.app",
 ]
 CORS_ALLOW_NULL_ORIGIN = True   # 🔑 para cuando el navegador envía Origin: null en recursos <img>

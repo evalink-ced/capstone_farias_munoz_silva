@@ -6,6 +6,7 @@ import { addToast } from "@heroui/toast";
 import axios from "@/services/google/axiosInstance";
 import "@/features/evaluacion/styles/animations.css";
 import DenegarModal from "@/features/evaluacion/components/autoevaluacion/PageInicio/Resumen/DenegarModal";
+import AceptarModal from "@/features/evaluacion/components/autoevaluacion/PageInicio/Resumen/AceptarModal"; 
 import EvaluacionDetalleCommon from "@/features/evaluacion/components/EvaluacionDetalleCommon";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { EvaluationUtils } from "@/features/evaluacion/constants/defaults";
@@ -339,6 +340,7 @@ export default function JefaturaEvaluacionDetallePage() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [openRejectModal, setOpenRejectModal] = useState(false);
+    const [openAcceptModal, setOpenAcceptModal] = useState(false);
 
 
     // Priorizar estructura_json (snapshot) sobre tipo_evaluacion
@@ -626,18 +628,26 @@ export default function JefaturaEvaluacionDetallePage() {
                     <ActionButtons
                         isReadOnly={isReadOnly || !data?.cerrado_para_firma || data?.estado_firma === 'firmado_obs'}
                         saving={saving}
-                        onAccept={handleAcceptEvaluation}
+                        onAccept={() => setOpenAcceptModal(true)}
                         onReject={() => setOpenRejectModal(true)}
                     />
-                </div>
 
-                {/* Modal de rechazo */}
-                <DenegarModal
-                    open={openRejectModal}
-                    onClose={() => setOpenRejectModal(false)}
-                    onSubmit={handleRejectEvaluation}
-                    loading={saving}
-                />
+                    {/* Modal de confirmación de firma */}
+                    <AceptarModal
+                        open={openAcceptModal}
+                        onClose={() => setOpenAcceptModal(false)}
+                        onConfirm={handleAcceptEvaluation}
+                        loading={saving}
+                    />
+
+                    {/* Modal de rechazo */}
+                    <DenegarModal
+                        open={openRejectModal}
+                        onClose={() => setOpenRejectModal(false)}
+                        onSubmit={handleRejectEvaluation}
+                        loading={saving}
+                    />
+                </div>
             </div>
         </div>
     );

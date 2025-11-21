@@ -1,3 +1,4 @@
+// Importaciones y helpers
 import React, { useState, Suspense, useEffect, JSX } from "react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 // import { Divider } from "@heroui/divider"; // ← no usado
@@ -5,7 +6,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { addToast } from "@heroui/toast";
 
-import { title } from "@/shared/utils/primitives";
 import { Button } from "@heroui/button";
 import { ThemeSwitch } from "@/shared/components/ui/theme-switch";
 
@@ -48,6 +48,7 @@ const showErrorToast = (type: string) => {
 };
 
 // Burbujas animadas
+// Componente de fondo con burbujas cálidas
 const EnhancedBubbles = () => {
   const [bubbles, setBubbles] = useState<JSX.Element[] | null>(null);
 
@@ -57,43 +58,45 @@ const EnhancedBubbles = () => {
     const screenHeight = window.innerHeight;
     const isDark = document.documentElement.classList.contains("dark");
 
-    const newBubbles = [...Array(10)].map((_, i) => {
-      const size = 40 + Math.random() * 40;
-      const depth = i / 10;
+    const newBubbles = [...Array(6)].map((_, i) => {
+      const size = 36 + Math.random() * 18;
+      const depth = i / 6;
       const colors = isDark
         ? [
-            "rgba(59,130,246,0.25)",   // blue-500
-            "rgba(147,51,234,0.20)",   // purple-600
-            "rgba(16,185,129,0.18)",   // emerald-500
-            "rgba(99,102,241,0.22)",   // indigo-500
+            "rgba(59,130,246,0.16)",  // blue-500
+            "rgba(99,102,241,0.14)",  // indigo-500
+            "rgba(14,165,233,0.14)",  // sky-500
+            "rgba(56,189,248,0.14)",  // cyan-400
+            "rgba(37,99,235,0.14)",   // blue-600
           ]
         : [
-            "rgba(59, 130, 246, 0.2)",   // blue-500
-            "rgba(147, 51, 234, 0.15)",  // purple-600
-            "rgba(16, 185, 129, 0.12)",  // emerald-500
-            "rgba(99, 102, 241, 0.18)",  // indigo-500
+            "rgba(59,130,246,0.25)",  // blue-500
+            "rgba(99,102,241,0.20)",  // indigo-500
+            "rgba(14,165,233,0.18)",  // sky-500
+            "rgba(56,189,248,0.18)",  // cyan-400
+            "rgba(147,197,253,0.15)", // blue-300
           ];
 
       return (
         <motion.div
           key={i}
           animate={{
-            x: [i % 2 === 0 ? -100 : screenWidth + 100, i % 2 === 0 ? screenWidth + 100 : -100],
+            x: [i % 2 === 0 ? -120 : screenWidth + 120, i % 2 === 0 ? screenWidth + 120 : -120],
             y: [Math.random() * screenHeight, Math.random() * screenHeight],
-            scale: [1, 1.2, 1],
+            scale: [1, 1.1, 1],
           }}
           className="absolute rounded-full pointer-events-none"
-          initial={{ x: i % 2 === 0 ? -100 : screenWidth + 100, y: Math.random() * screenHeight }}
+          initial={{ x: i % 2 === 0 ? -120 : screenWidth + 120, y: Math.random() * screenHeight }}
           style={{
             width: size,
             height: size,
             backgroundColor: colors[i % colors.length],
-            boxShadow: `0 0 40px ${colors[i % colors.length]}`,
+            boxShadow: `0 0 30px ${colors[i % colors.length]}`,
             zIndex: -depth * 10,
             mixBlendMode: isDark ? "screen" : "normal",
-            filter: "blur(0.5px)",
+            filter: "blur(0.6px)",
           }}
-          transition={{ duration: 15 - depth * 5, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+          transition={{ duration: 14 - depth * 4, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
         />
       );
     });
@@ -104,7 +107,8 @@ const EnhancedBubbles = () => {
   return <AnimatePresence>{bubbles}</AnimatePresence>;
 };
 
-const Welcome: React.FC = () => {
+
+function Welcome() {
   const location = useLocation();
   const navigate = useNavigate();
   const [showTerms, setShowTerms] = useState(false);
@@ -136,87 +140,84 @@ const Welcome: React.FC = () => {
 
   return (
     <>
-      {/* Fondo animado */}
-      <div className="fixed inset-0 -z-10 overflow-hidden bg-gradient-to-br from-blue-100 to-purple-100 dark:from-[#0b1220] dark:via-[#0f1831] dark:to-[#0b1220]">
+      {/* Fondo animado azul con burbujas + malla de puntos */}
+      <div className="fixed inset-0 -z-10 overflow-hidden bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-50 dark:from-[#0b1220] dark:via-[#0f172a] dark:to-[#0b1220]">
         <EnhancedBubbles />
+        <div
+          className="absolute inset-0 opacity-[0.07] pointer-events-none"
+          style={{ backgroundImage: "radial-gradient(#000 1px, transparent 1px)", backgroundSize: "12px 12px" }}
+        />
       </div>
-
-      {/* Layout principal */}
+      {/* Layout principal y tarjeta */}
       <div className="min-h-screen flex flex-col">
-        {/* Contenido principal centrado */}
-        <main className="flex-1 flex items-center justify-center px-6 py-8">
+        <main className="flex-1 flex items-center justify-center px-6 py-10">
           <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
+            initial={{ scale: 0.97, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="w-full max-w-[480px]"  // ← ancho ampliado
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="w-full max-w-[620px]"
           >
-            <Card className="rounded-2xl backdrop-blur-xl bg-white/95 dark:bg-[#111827]/90 shadow-xl dark:shadow-[0_20px_80px_rgba(0,0,0,0.7)] border border-white/50 dark:border-white/10 ring-1 ring-black/5 dark:ring-white/5">
-              {/* Header del card */}
-              <CardHeader className="text-center justify-center py-10 px-8">
-                <div className="space-y-6">
-                  {/* Logo arriba del título */}
+            <Card className="rounded-3xl backdrop-blur-xl bg-white/90 dark:bg-[#111827]/90 shadow-2xl border border-white/60 dark:border-white/10 ring-1 ring-black/5 dark:ring-white/5">
+              <CardHeader className="px-8 pt-8">
+                <div className="w-full flex flex-col items-center justify-center text-center gap-3">
                   <img
                     src="/CED.png"
                     alt="Logo Evalink"
-                    className="mx-auto w-20 h-20 sm:w-24 sm:h-24 object-contain"
+                    className="w-14 h-14 object-contain rounded-xl mx-auto"
                     draggable={false}
                   />
-
-                  {/* Título principal */}
-                  <div className="space-y-2">
-                    <h1 className="text-3xl font-bold leading-tight">
-                      <span className={title({ size: "sm", color: "blue" })}>Evalink</span>
-                    </h1>
-                  </div>
+                  <h1 className="text-3xl font-extrabold tracking-tight">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 dark:from-blue-400 dark:via-indigo-400 dark:to-cyan-300">
+                      Evalink
+                    </span>
+                  </h1>
+                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                    Accede con tu cuenta institucional
+                  </p>
                 </div>
               </CardHeader>
 
-              {/* Body del card */}
-              <CardBody className="px-8 pb-10">
-                <div className="space-y-8">
-                  {/* Sección de autenticación */}
-                  <div className="space-y-4">
-                    <div className="text-center">
-                      <p className="text-sm font-medium text-slate-800 dark:text-slate-200">
-                        Para continuar, inicia sesión con tu cuenta institucional
-                      </p>
+              <CardBody className="px-8 pb-10 text-center">
+                {/* Inicio de sesión (único contenido) */}
+                <p className="text-sm text-slate-600 dark:text-slate-300">
+                  Inicia sesión para continuar con tus procesos de evaluación.
+                </p>
+
+                <Suspense
+                  fallback={
+                    <div className="flex items-center justify-center py-4 gap-2">
+                      <div className="w-4 h-4 border-2 border-rose-500 border-t-transparent rounded-full animate-spin" />
+                      <span className="text-sm text-slate-600 dark:text-slate-300">Cargando...</span>
                     </div>
+                  }
+                >
+                  <div className="mt-3 flex justify-center">
+                    <GoogleLoginButton />
+                  </div>
+                </Suspense>
 
-                    <Suspense
-                      fallback={
-                        <div className="flex items-center justify-center py-4 gap-2">
-                          <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-                          <span className="text-sm text-slate-600 dark:text-slate-300">Cargando...</span>
-                        </div>
-                      }
+                <div className="mt-6">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                    Al iniciar sesión, aceptas nuestros{" "}
+                    <Button
+                      className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 underline font-medium transition-colors"
+                      type="button"
+                      onClick={() => setShowTerms(true)}
+                      variant="light"
+                      color="primary"
                     >
-                      <GoogleLoginButton />
-                    </Suspense>
-                  </div>
+                      Términos y Condiciones
+                    </Button>
+                  </p>
+                </div>
 
-                  {/* Divider + Términos */}
-                  <div className="border-t border-slate-200 dark:border-slate-600 pt-6 text-center">
-                    <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                      Al iniciar sesión, aceptas nuestros{" "}
-                      <Button
-                        className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 underline font-medium transition-colors"
-                        type="button"
-                        onClick={() => setShowTerms(true)}
-                        variant="light"
-                        color="primary"
-                      >
-                        Términos y Condiciones
-                      </Button>
-                    </p>
-                  </div>
-
-                  {/* Fila de settings: Cambiar tema */}
-                  <div className="flex items-center justify-between rounded-lg bg-slate-50 dark:bg-zinc-800/60 px-3 py-2">
-                    <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
-                      Cambiar tema
-                    </span>
-                    <ThemeSwitch />
+                {/* Cambiar tema: pill centrado */}
+                <div className="mt-8">
+                  <div className="mx-auto w-fit flex items-center gap-2 rounded-full bg-blue-50 dark:bg-zinc-800/60 px-3 py-1.5 shadow-sm">
+                    <span className="text-xs font-medium text-blue-700 dark:text-slate-200">Tema</span>
+                    <div className="scale-90 sm:scale-75">
+                      <ThemeSwitch />
+                    </div>
                   </div>
                 </div>
 
@@ -237,6 +238,8 @@ const Welcome: React.FC = () => {
       </div>
     </>
   );
-};
+}
 
 export default Welcome;
+
+// Iconos de evaluación

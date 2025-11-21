@@ -31,14 +31,10 @@ export const createDirectivoButton = (key: keyof typeof PERMISSIONS.DIRECTIVO, l
 export const createEvaluacionButton = (key: keyof typeof PERMISSIONS.EVALUACION, label: string, href: string) =>
   createButton(label, href, PERMISSIONS.EVALUACION[key]);
 
-export const createLicenciasButton = (key: keyof typeof PERMISSIONS.LICENCIAS, label: string, href: string) =>
-  createButton(label, href, PERMISSIONS.LICENCIAS[key]);
 
 export const createFundacionButton = (key: keyof typeof PERMISSIONS.FUNDACION, label: string, href: string) =>
   createButton(label, href, PERMISSIONS.FUNDACION[key]);
 
-export const createBeneficiosAdminButton = (key: keyof typeof PERMISSIONS.BENEFICIOS_ADMIN, label: string, href: string) =>
-  createButton(label, href, PERMISSIONS.BENEFICIOS_ADMIN[key]);
 
 export const createSistemaButton = (key: keyof typeof PERMISSIONS.SISTEMA, label: string, href: string) =>
   createButton(label, href, PERMISSIONS.SISTEMA[key]);

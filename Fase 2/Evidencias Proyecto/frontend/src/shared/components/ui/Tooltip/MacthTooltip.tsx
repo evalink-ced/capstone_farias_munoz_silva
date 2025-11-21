@@ -9,26 +9,12 @@ interface MatchTooltipProps {
   children: React.ReactNode;
 }
 
-const getMatchedFields = (term: string, user?: User): string[] => {
+const getMatchedFields = (user?: User): string[] => {
   if (!user) return [];
 
-  const t = term.toLowerCase();
   const matches: string[] = [];
 
-  user.titulos?.forEach((titulo) => {
-    if (titulo.titulo.toLowerCase().includes(t))
-      matches.push(`Título: ${titulo.titulo}`);
-  });
 
-  user.magisters?.forEach((m) => {
-    if (m.magister.toLowerCase().includes(t))
-      matches.push(`Magíster: ${m.magister}`);
-  });
-
-  user.diplomados?.forEach((d) => {
-    if (d.diplomado.toLowerCase().includes(t))
-      matches.push(`Diplomado: ${d.diplomado}`);
-  });
 
   return matches;
 };
@@ -38,7 +24,7 @@ const MatchTooltip: React.FC<MatchTooltipProps> = ({
   searchTerm,
   children,
 }) => {
-  const matched = getMatchedFields(searchTerm, user);
+  const matched = getMatchedFields(user);
 
   if (!user || searchTerm.trim().length === 0 || matched.length === 0)
     return <>{children}</>;

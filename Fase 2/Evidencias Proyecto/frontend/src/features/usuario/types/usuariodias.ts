@@ -6,7 +6,6 @@ export interface UsuarioDias {
   first_name: string;
   last_name: string;
   rut: string;
-  codigo: string;
   ciclo: string;
   empresa: string;
   dias_disponibles: number;

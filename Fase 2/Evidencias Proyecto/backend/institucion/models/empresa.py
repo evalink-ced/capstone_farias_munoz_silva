@@ -35,10 +35,6 @@ class Empresa(models.Model):
     tipo_empresa = models.CharField(max_length=12, choices=TipoEmpresa.choices, default=TipoEmpresa.SPA)
     categoria_operativa = models.CharField(max_length=20, choices=Categoria.choices, default=Categoria.OTRO)
 
-    # Políticas + sedes habilitadas
-    sedes_permitidas = models.ManyToManyField("Sede", related_name="empresas")
-    max_sedes_activas_por_persona = models.PositiveSmallIntegerField(default=1)
-    permite_concurrencia = models.BooleanField(default=False)  # True p/ SP si aplica
 
     def __str__(self):
         return self.empresa

@@ -23,7 +23,7 @@ export const useFormularioAsignacion = () => {
   } = useEvaluacionAsignadaStore();
 
   const { usuarios, empresas, ciclos } = useUsuariosEmpresasCiclos();
-  const tipos = useTiposEvaluacion();
+  const { tipos, loading: tiposLoading } = useTiposEvaluacion();
   const [searchParams] = useSearchParams();
   const isAutoevaluacion = searchParams.get("auto") === "true";
 
@@ -130,6 +130,7 @@ export const useFormularioAsignacion = () => {
     // Datos computados
     usuariosFiltrados,
     tiposFiltrados,
+    tiposLoading,
     empresas,
     ciclos,
     modalExito,

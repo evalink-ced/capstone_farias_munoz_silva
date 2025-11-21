@@ -17,10 +17,8 @@ import { addToast } from "@heroui/toast";
 import { KeyBlock } from "@/features/evaluacion/components/autoevaluacion/PageInicio/Resumen/KeyBlock";
 import { EvaluationUtils } from "@/features/evaluacion/constants/defaults";
 import { TimelineEstado } from "@/features/evaluacion/components/flow";
-import {
-  descargarPDFEvaluacionJefe,
-  descargarPDFAutoevaluacion,
-} from "@/features/evaluacion/services/evaluacion";
+import { descargarPDFInteligente } from "@/features/evaluacion/services/pdf";
+import { useUser } from "@/hooks/useUser";
 import type { EvaluacionJefe } from "@/features/evaluacion/types/evaluacion";
 
 type IndicadorDetalle = {
@@ -108,6 +106,7 @@ export default function EvaluacionDetalleCommon({
   const [selectedAreaIndex, setSelectedAreaIndex] = useState(0);
   const [downloadingPDF, setDownloadingPDF] = useState(false);
   const selectedArea = areas[selectedAreaIndex];
+  const { user } = useUser();
 
   // ✅ Validar porcentajeTotal antes de usarlo en los cálculos
   const porcentajeTotalValidado = (() => {
@@ -145,14 +144,12 @@ export default function EvaluacionDetalleCommon({
 
     setDownloadingPDF(true);
     try {
-      // Determinar qué función usar según el tipo de evaluación
-      if (tipo === 'autoevaluacion') {
-        await descargarPDFAutoevaluacion(evaluacionId);
-      } else if (tipo === 'evaluacion_jefatura') {
-        // Verificar si es "mis evaluaciones" o evaluaciones de jefatura
-        // Esto se puede determinar por el contexto o agregar una prop adicional
-        await descargarPDFEvaluacionJefe(evaluacionId);
-      }
+      await descargarPDFInteligente({
+        evaluacionId,
+        evaluacion: evaluacionData,
+        currentUserId: user?.id,
+        prefer: tipo === 'autoevaluacion' ? 'mis' : undefined,
+      });
 
       addToast({
         title: "PDF Descargado",
@@ -164,7 +161,7 @@ export default function EvaluacionDetalleCommon({
       console.error("Error downloading PDF:", error);
       addToast({
         title: "Error al descargar PDF",
-        description: error.message || "No se pudo descargar el archivo PDF",
+        description: error?.response?.data?.error || error.message || "No se pudo descargar el archivo PDF",
         color: "danger",
         variant: "solid",
       });

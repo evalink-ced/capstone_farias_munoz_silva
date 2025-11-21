@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Informe de Evaluación</title>
+<style>
+/* Base moderna compatible con wkhtmltopdf */
+body { font-family: Arial, Helvetica, sans-serif; margin: 0; padding: 24px; color: #111; background: #fafafa; }
+.h1 { font-size: 20px; font-weight: bold; margin: 0; }
+.small { color: #666; font-size: 12px; line-height: 1.5; }
+.card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; margin-bottom: 18px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.section-title { font-weight: bold; font-size: 14px; margin-bottom: 8px; }
+.section-subtitle { font-weight: 600; font-size: 13px; color: #111; margin-bottom: 4px; }
+
+.kpi-title { color: #666; font-size: 12px; }
+.kpi-value { font-size: 18px; font-weight: bold; }
+
+.row { font-size: 0; margin: 0 -10px; }          /* gutters horizontales */
+.col { display: inline-block; width: 50%; vertical-align: top; font-size: 12px; padding: 6px 10px; margin-bottom: 14px; box-sizing: border-box; }
+
+.bar { height: 8px; background: #e5e7eb; border-radius: 999px; overflow: hidden; margin-top: 8px; }
+.fill { height: 8px; background: #10b981; }
+
+.pill { font-size: 12px; color: #111; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 999px; padding: 6px 10px; }
+.badge { display: inline-block; padding: 6px 10px; border-radius: 999px; background: #e9f7ef; color: #0f766e; font-size: 12px; border: 1px solid #c7eadf; }
+
+.level { display:inline-block; padding:4px 8px; border-radius:8px; border:1px solid #e5e7eb; margin:3px 6px 3px 0; font-size:11px; color:#333; background: #f9fafb; }
+.level.selected { background:#e9f7ef; border-color:#c7eadf; color:#0f766e; font-weight:600; }
+.level .score { color:#666; margin-left:6px; }
+
+.table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+.table th, .table td { padding: 8px 10px; border-top: 1px solid #e5e7eb; font-size: 12px; text-align: left; vertical-align: top; }
+.table th { color: #444; font-weight: 600; background: #f9fafb; }
+.table.zebra tbody tr:nth-child(odd) { background: #fcfcfc; }
+
+.footer { margin-top: 10px; font-size: 11px; color: #666; }
+.hr { height: 1px; background: #eee; margin: 8px 0; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <div class="h1">Evaluado: {{ evaluado_nombre }} · Evaluador: {{ evaluador_nombre }}</div>
+        <div class="small">Fecha evaluación: {{ evaluacion.fecha_evaluacion }} · Inicio: {{ evaluacion.fecha_inicio|date:"Y-m-d H:i" }}</div>
+      </div>
+      <div>
+        <div class="pill" style="margin-top:6px;">Tipo de Evaluación: {{ tipo_evaluacion_nombre }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Resultado Final</div>
+    <div class="row">
+      <div class="col">
+        <div class="kpi-title">Puntaje Total</div>
+        <div class="kpi-value">{{ total_obtenido }} / {{ total_max }}</div>
+      </div>
+      <div class="col">
+        <div class="kpi-title">Porcentaje</div>
+        <div class="kpi-value">{{ porcentaje_total }}%</div>
+        <div class="bar"><div class="fill" style="width: {{ porcentaje_total }}%;"></div></div>
+      </div>
+    </div>
+    <div class="hr"></div>
+    <div><span class="kpi-title">Nivel de Logro</span> · <span class="badge">{{ nivel_logro }}</span></div>
+  </div>
+
+  {% if areas %}
+  <div class="card">
+    <div class="section-title">Resumen por Áreas</div>
+    <div class="row">
+      {% for a in areas %}
+      <div class="col">
+        <div class="small" style="font-weight:600;">{{ forloop.counter }}. {{ a.nombre }}</div>
+        <div class="bar"><div class="fill" style="width: {{ a.porcentaje }}%;"></div></div>
+        <div class="small" style="margin-top:6px;">Puntaje: {{ a.puntaje_text }} · {{ a.porcentaje }}%</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% for a in areas %}
+  <div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="section-title">{{ forloop.counter }}. {{ a.nombre }}</div>
+      <div class="pill">Puntaje: {{ a.puntaje_text }} · {{ a.porcentaje }}%</div>
+    </div>
+
+    {% if a.competencias %}
+      {% for c in a.competencias %}
+        <div style="margin-top:10px;">
+          <div class="section-subtitle">{{ forloop.counter }}. {{ c.name }}</div>
+          <div class="small">Puntaje: {{ c.puntaje_text }} · {{ c.porcentaje }}%</div>
+          <div class="bar"><div class="fill" style="width: {{ c.porcentaje }}%;"></div></div>
+        </div>
+
+        <table class="table zebra">
+          <thead>
+            <tr><th style="width:36px;">#</th><th>Indicador</th><th>Puntaje</th><th>Máximo</th></tr>
+          </thead>
+          <tbody>
+            {% for ind in c.indicadores %}
+            <tr>
+              <td>{{ ind.numero }}</td>
+              <td>
+                <div style="font-weight:600;">{{ ind.nombre }}</div>
+                {% if ind.descripcion %}<div class="small">{{ ind.descripcion }}</div>{% endif %}
+                {% if ind.niveles %}
+                <div style="margin-top:6px;">
+                  {% for lvl in ind.niveles %}
+                    <span class="level{% if lvl.seleccionado %} selected{% endif %}">
+                      {{ lvl.nombre }} <span class="score">· {{ lvl.puntaje }}</span>
+                    </span>
+                    {% if lvl.descripcion %}<div class="small">{{ lvl.descripcion }}</div>{% endif %}
+                  {% endfor %}
+                </div>
+                {% endif %}
+              </td>
+              <td>{{ ind.puntaje }}</td>
+              <td>{{ ind.maximo }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endfor %}
+    {% endif %}
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  {% if text_destacar %}
+  <div class="card">
+    <div class="section-title">Fortalezas Destacadas</div>
+    <div style="white-space:pre-wrap; font-size:12px; line-height:1.6; margin-top:8px;">
+      {{ text_destacar }}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if text_mejorar %}
+  <div class="card">
+    <div class="section-title">Oportunidades de Mejora</div>
+    <div style="white-space:pre-wrap; font-size:12px; line-height:1.6; margin-top:8px;">
+      {{ text_mejorar }}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if retroalimentacion %}
+  <div class="card">
+    <div class="section-title">Retroalimentación</div>
+    <div style="white-space:pre-wrap; font-size:12px; line-height:1.6; margin-top:8px;">
+      {{ retroalimentacion }}
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="footer">Emitido el {{ today|date:"Y-m-d" }} · Estado: {{ estado_actual }}</div>
+</body>
+</html>

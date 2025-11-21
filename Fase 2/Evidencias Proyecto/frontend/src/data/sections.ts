@@ -24,7 +24,7 @@ export const sections: Section[] = [
     buttons: [buttons.usuarios], // Changed from buttons.usuariosFicha to buttons.usuarios
   },
   {
-    title: "EVALUACIÓN DE DESEMPEÑO",
+    title: "RECURSOS HUMANOS",
     icon: "📊",
     buttons: [buttons.plantillas, buttons.asignar],
     fullWidth: true,

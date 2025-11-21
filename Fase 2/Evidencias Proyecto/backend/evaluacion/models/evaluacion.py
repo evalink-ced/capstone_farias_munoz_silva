@@ -139,7 +139,7 @@ class EvaluacionJefe(models.Model):
         if self.estado_firma == 'firmado':
             return "finalizada"
         elif self.estado_firma == 'firmado_obs':
-            return "denegada"
+            return "firmado con observación"
         elif self.cerrado_para_firma:
             return "pendiente_firma"
         elif self.retroalimentacion_completada:

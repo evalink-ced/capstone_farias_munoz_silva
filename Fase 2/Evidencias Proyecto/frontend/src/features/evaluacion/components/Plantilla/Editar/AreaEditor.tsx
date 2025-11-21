@@ -18,12 +18,12 @@ const EditarTipoEvaluacion = () => {
     showModal,
     isEditing,
     isAutoevaluacion,
-    isPonderada,
+
     nombreTipoEvaluacion,
     areas,
     handleSubmit,
     onToggleAutoevaluacion,
-    onTogglePonderada,
+
     handleAreaChange,
     handleNombreChange,
     handleEnableEditing,
@@ -77,11 +77,9 @@ const EditarTipoEvaluacion = () => {
           <NombreEvaluacionInput
             isAutoevaluacion={isAutoevaluacion}
             isEditing={isEditing}
-            isPonderada={isPonderada}
             value={nombreTipoEvaluacion}
             onChange={handleNombreChange}
             onToggleAutoevaluacion={onToggleAutoevaluacion}
-            onTogglePonderada={onTogglePonderada}
           />
 
           <AreaTabs
